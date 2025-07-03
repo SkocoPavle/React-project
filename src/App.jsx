@@ -1,16 +1,16 @@
 import { useState } from "react"
 import "./styles.css"
+import { NewTodoForm } from "./NewTodoForm"
 
 export default function App () {
   const [newItem, setNewItem] = useState("")
   const [todos, setTodos] = useState([])
 
-  function handleSubmit (e) {
-    e.preventDefault()
+  function addTodo (title) {
 
     setTodos(currentTodos => {
       return [
-        ...currentTodos, {id: crypto.randomUUID(), title: newItem, completed: false},
+        ...currentTodos, {id: crypto.randomUUID(), title, completed: false},
       ]
     })
 
@@ -35,16 +35,11 @@ export default function App () {
     })
   } 
   return <>
-    <form className="new-item-form" onSubmit={handleSubmit}>
-      <div className="form-row">
-        <label htmlFor="item">New item</label>
-        <input id="item" type="text" value={newItem} onChange={e => setNewItem(e.target.value)} />
-        <button className="btn">Add</button>
-      </div>
-    </form>
+    <NewTodoForm onSubmit={addTodo}/>
 
     <h1 className="header">Todo List</h1>
     <ul className="list">
+      {todos.length === 0 && "No todos"}
       {todos.map(todo => {
         return (
           <li key={todo.id}>
