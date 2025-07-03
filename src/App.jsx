@@ -19,7 +19,7 @@ export default function App () {
 
   function toggleTodo (id, completed) {
     setTodos (currentTodos => {
-      currentTodos.map(todo => {
+      return currentTodos.map(todo => {
         if (todo.id === id) {
           return {...todo, completed}
         }
@@ -28,6 +28,12 @@ export default function App () {
       }) 
     })
   }
+
+  function deleteTodo (id) {
+    setTodos (currentTodos => {
+      return currentTodos.filter(todo => todo.id !== id)
+    })
+  } 
   return <>
     <form className="new-item-form" onSubmit={handleSubmit}>
       <div className="form-row">
@@ -39,19 +45,21 @@ export default function App () {
 
     <h1 className="header">Todo List</h1>
     <ul className="list">
-      {todos.map(todo => (
-        <li key={todo.id}>
-          <label>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={e => toggleTodo(todo.id, e.target.checked)}
-            />
-            {todo.title}
-          </label>
-          <button className="btn btn-danger">Delete</button>
-        </li>
-      ))}
+      {todos.map(todo => {
+        return (
+          <li key={todo.id}>
+            <label>
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={e => toggleTodo(todo.id, e.target.checked)}
+              />
+              {todo.title}
+            </label>
+            <button className="btn btn-danger" onClick={() => deleteTodo(todo.id)}>Delete</button>
+          </li>
+        )
+      })}
     </ul>
   </>
 }
